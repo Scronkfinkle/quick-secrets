@@ -1,0 +1,8 @@
+Package: quick-secrets
+Version: 0.1-1
+Section: base
+Priority: optional
+Architecture: amd64
+Depends: ruby2.5 (>= 2.5.1), ruby2.5-dev (>= 2.5.1), sqlite3 (>= 3.22.0), libsqlite3-dev (>= 3.22.0)
+Maintainer: Jesse Roland <jroland@sift.net>
+Description: One Time Secret Alternative

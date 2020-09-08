@@ -1,0 +1,128 @@
+<html>
+  <head>
+    <%= ERB.new(File.read(__dir__+"/header_data.erb")).result(binding) %>
+  </head>
+  <body>
+    <div class="container align-items-center">
+      <div class="row">
+        <div class="col-sm">
+          <%= ERB.new(File.read(__dir__+"/nav_row.erb")).result(binding) %>
+          <h1>Administration</h1>
+          <form class="border">
+            <h2>Create New Account</h2>
+            <div class="form-group">
+              <label for="username">Username</label>
+              <input type="text" id="username" class="form-control">
+              <small id="usernameHelp" class="form-text text-danger" style="display: none;">
+                Please enter a username of at least 5 characters
+              </small>
+            </div>
+            <div class="form-group">
+              <label for="password">Password</label>
+              <input type="password" id="password" class="form-control">
+              <small id="password" class="form-text text-danger" style="display: none;">
+                Please enter a password of at least 6 characters
+              </small>
+            </div>
+            <div class="form-group">
+              <label for="privilege">Access Level</label>
+              <select id="privilege" class="form-control">
+                <option value="<%= QuickSecrets::Privilege::USER %>">User</option>
+                <option value="<%= QuickSecrets::Privilege::ADMIN %>">Admin</option>
+              </select>
+            </div>
+
+            <button type="button" id="create_account" class="btn btn-block btn-primary">Create Account</button>
+            <div id="account-response">
+            </div>
+
+          </form>
+          <!-- if this ever becomes large scale this will need to be substituted with datatables -->
+          <form class="border">
+            <h2>Manage Accounts</h2>
+            <table class="table">
+              <thead>
+                <th>Username</th>
+                <th>Access Level</th>
+                <th>Manage</th>
+              </thead>
+              <tbody>
+                <% QuickSecrets::Core.core.db[:account].where(expired: false).each do |acc| %>
+                  <% access_level = acc[:privilege] == QuickSecrets::Privilege::ADMIN ? "Admin" : "User" %>
+                  <tr id="tr-<%= acc[:id]%>">
+                    <td><%= acc[:username] %></td>
+                    <td><%= access_level %></td>
+                    <td><button type="button" class="btn btn-danger" id="delete-<%= acc[:id] %>">Delete</button>
+                  </tr>
+                <% end %>
+             </tbody>
+            </table>
+          </form>
+
+        </div>
+
+      </div>
+    </div>
+  </body>
+</html>
+<script>
+  $("button[id^=delete-]").on("click",function(e) {
+    let id = $(e.currentTarget).attr('id').split("-")[1];
+    axios.post(`/delete_account/${id}`).then(function(resp){
+      let data = resp.data;
+      if(data.status){
+        $("#account-response").html(`
+<div class="alert alert-success" role="alert">
+<span>${data.reason}</span><br>
+`);
+        $(`#tr-${id}`).remove();
+      }else{
+        $("#account-response").html(`
+<div class="alert alert-danger" role="alert">
+  <span>${data.reason}</span>
+</div>
+`);
+      }
+    });
+  }
+  );
+  $("#create_account").on("click", function(e) {
+
+    let username = $("#username").val();
+    let password = $("#password").val();
+    let privilege = $("#privilege").val();
+    if(username.length < 5){
+      $("#username").toggleClass("is-invalid",true);
+      $("#usernameHelp").show();
+      return;
+    }else{
+      $("#username").toggleClass("is-invalid",false);
+      $("#usernameHelp").hide();
+    }
+
+    if(password.length < 6){
+      $("#password").toggleClass("is-invalid",true);
+      $("#passwordHelp").show();
+      return;
+    }else{
+      $("#password").toggleClass("is-invalid",false);
+      $("#passwordHelp").hide();
+    }
+    
+    axios.post("/new_account",{username: username, password: password, privilege: privilege}).then(function(resp){
+      let data = resp.data;
+      if(data.status){
+        $("#account-response").html(`
+<div class="alert alert-success" role="alert">
+<span>${data.reason}</span><br>
+`);
+      }else{
+        $("#account-response").html(`
+<div class="alert alert-danger" role="alert">
+  <span>${data.reason}</span>
+</div>
+`);
+      }
+    });
+  });
+</script>

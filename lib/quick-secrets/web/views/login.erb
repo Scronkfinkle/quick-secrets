@@ -1,0 +1,52 @@
+<html>
+  <head>
+    <%= ERB.new(File.read(__dir__+"/header_data.erb")).result(binding) %>
+  </head>
+  <body>
+    <div class="container">
+      <%= ERB.new(File.read(__dir__+"/nav_row.erb")).result(binding) %>
+      <div class="row">
+
+        <div class="col-sm">
+        </div>
+        <div class="col-sm">
+          <h1>Login </h1>
+          <form onSubmit="return false;">
+            <div class="form-group">
+              <label for="username">Username</label>
+              <input type="text" class="form-control" id="username" name="username">
+            </div>
+            <div class="form-group">
+              <label for="password">Password</label>
+              <input type="password" class="form-control" id="password" name="password">
+            </div>
+            <button id="login" type="button" class="btn btn-primary">Submit</button>
+          </form>
+        </div>
+        <div class="col-sm">
+        </div>
+      </div>
+
+    </div>
+  </body>
+</html>
+<script>
+  var login = function(){
+    let username = $("#username").val()
+    let password = $("#password").val()
+    axios.post("/login", { username: username, password: password }).then(function(resp){
+      let data = resp.data;
+      location.href = resp.data.url;
+    });
+  }
+
+$("#login").on("click",function(e){
+  login();
+});
+
+$("#password").on("keyup", function(e) {
+  if(e.keyCode == 13) {
+    login();
+  }
+});
+</script>

@@ -1,0 +1,15 @@
+version: "3.1"
+services:
+  quick-secrets:
+    image: scronkfinkle/quick-secrets
+    ports:
+      - 8080:8080
+    environment:
+      - QUICK_SECRETS_URL=http://mysite.com
+      - QUICK_SECRETS_LISTEN_ADDRESS=0.0.0.0
+      - QUICK_SECRETS_LISTEN_PORT=8080
+      - QUICK_SECRETS_SESSION_EXPIRATION=500
+      - QUICK_SECRETS_DATABASE=sqlite:///etc/quick_secrets/qsecrets.db
+      - QUICK_SECRETS_ADMIN_PASSWORD=65c21921ca10a8502757efc9aa552874d181c6206feb2845a921eb57f5e518d4
+      - QUICK_SECRETS_CONFIG=/etc/quick_secrets/config.yml
+

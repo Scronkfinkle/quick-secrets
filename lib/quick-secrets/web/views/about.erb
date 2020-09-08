@@ -1,0 +1,11 @@
+<html>
+  <head>
+    <%= ERB.new(File.read(__dir__+"/header_data.erb")).result(binding) %>
+  </head>
+  <body>
+    <div class="container align-items-center">
+      <%= ERB.new(File.read(__dir__+"/nav_row.erb")).result(binding) %>
+      <%= markdown_text %>
+    </div>
+  </body>
+</html>

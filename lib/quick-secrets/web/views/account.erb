@@ -1,0 +1,94 @@
+<html>
+  <head>
+    <%= ERB.new(File.read(__dir__+"/header_data.erb")).result(binding) %>
+  </head>
+  <body>
+    <div class="container align-items-center">
+      <%= ERB.new(File.read(__dir__+"/nav_row.erb")).result(binding) %>
+      <div class="row">
+
+        <div class="col">
+          <h1>Account </h1>
+          <form class="border">
+            <h2>Change password</h2>
+            <div class="form-group">
+              <label for="pass1">New password</label>
+              <input type="password" id="pass1" class="form-control">
+              <small id="pass1Help" class="form-text text-danger" style="display: none;">
+                Please enter a password at least 6 characters long
+              </small>
+            </div>
+            <div class="form-group">
+              <label for="pass2">Confirm password</label>
+              <input type="password" id="pass2" class="form-control">
+              <small id="pass2Help" class="form-text text-danger" style="display: none;">
+                Passwords do not match
+              </small>
+            </div>
+            <button type="button" id="changepass" class="btn btn-primary">Change password</button>
+            <div id="response">
+            </div>
+
+          </form>
+
+          <form class="border">
+            <div class="form-group">
+              <label for="staticToken">Access Token</label>
+              <input type="text" readonly class="form-control-plaintext" id="staticToken" value="<%= token %>">
+            </div>
+          </form>
+          <div class="alert alert-info" role="alert">
+            To use your access token, append it to your HTTP header with the key <b>qsecret-token</b>
+          </div>
+          <div class="alert alert-info" role="alert">
+            Create a new secret<br>
+            <pre>curl -d '{"secret":"my secret phrase", "password":"my secret password"}' -H "qsecret-token: <%= token %>" -X POST <%= QuickSecrets::Core.core.config["url"] %>/secret</pre>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </body>
+</html>
+<script>
+  $("#changepass").on("click",function(e){
+
+    let pass1 = $("#pass1").val();
+    let pass2 = $("#pass2").val();
+
+    if(pass1.length < 6){
+      $("#pass1").toggleClass("is-invalid",true);
+      $("#pass1Help").show();
+      return;
+    }else{
+      $("#pass1").toggleClass("is-invalid",false);
+      $("#pass1Help").hide();
+    }
+
+    if(pass2 !== pass1){
+      $("#pass2").toggleClass("is-invalid",true);
+      $("#pass2Help").show();
+      return;
+    }else{
+      $("#pass2").toggleClass("is-invalid",false);
+      $("#pass2Help").hide();
+    }
+
+    axios.post("/change_password",{password: pass1}).then(function(resp) {
+      let success = resp.data.status;
+      if(success){
+        $("#response").html(`
+<div class="alert alert-success" role="alert">
+<span>Password updated successfully!</span><br>
+`);
+      }else{
+        $("#response").html(`
+<div class="alert alert-danger" role="alert">
+  <span>Error changing password, try again or contact sysops@sift.net</span>
+</div>
+`);
+      }
+  });
+});
+
+</script>

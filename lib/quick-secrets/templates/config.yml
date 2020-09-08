@@ -1,0 +1,19 @@
+# URL of your site, this string is used to generate links
+# e.g. mysite.com/secret/fcf8e49e5c7f3a8932a57cb91ba199f4db9fd695d342c61f17bb3b8698de2445
+# e.g. example.net:8080/secret/fcf8e49e5c7f3a8932a57cb91ba199f4db9fd695d342c61f17bb3b8698de2445
+url: http://mysite.com
+
+# Address and port for web server to bind to
+listen_address: "0.0.0.0"
+listen_port: 8080
+
+# Time until session expires in seconds
+session_expiration: 300
+
+database: "sqlite:///etc/quick_secrets/qsecrets.db"
+#Example of a postgres database entry
+#database: "postgres://user:password@host:port/database_name"
+
+# Default password: password1!
+# Comment this line to disable auto creation of admin account
+admin_password: 65c21921ca10a8502757efc9aa552874d181c6206feb2845a921eb57f5e518d4

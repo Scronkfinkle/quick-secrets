@@ -1,0 +1,21 @@
+#!/bin/sh
+set -e
+
+case "$1" in
+    install|configure)
+        gem install tmp/quick-secrets-0.0.1.gem
+        ;;
+
+    upgrade|abort-upgrade)
+        ;;
+
+    *)
+        echo "postinst called with unknown argument \`$1'" >&2
+        exit 0
+        ;;
+esac
+
+#DEBHELPER#
+
+exit 0
+
