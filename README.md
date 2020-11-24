@@ -42,6 +42,7 @@ services:
       - QUICK_SECRETS_DATABASE=sqlite:///etc/quick_secrets/qsecrets.db
       - QUICK_SECRETS_ADMIN_PASSWORD=65c21921ca10a8502757efc9aa552874d181c6206feb2845a921eb57f5e518d4
       - QUICK_SECRETS_CONFIG=/etc/quick_secrets/config.yml
+      - QUICK_SECRETS_SECRET_UUID_LENGTH=8
 ```
 
 ## Debian-based systems
@@ -105,6 +106,7 @@ Quick secrets can be configured via configuration file or by environment variabl
 | `QUICK_SECRETS_DATABASE` | the database to connect to. See `config.yml` for additional information | sqlite:///etc/quick_secrets/qsecrets.db |
 | `QUICK_SECRETS_ADMIN_PASSWORD` | The default admin password, stored as a SHA256 hash | 65c21921ca10a8502757efc9aa552874d181c6206feb2845a921eb57f5e518d4  (this is `password1!`) |
 | `QUICK_SECRETS_CONFIG` | The location of the `config.yml` | /etc/quick_secrets/config.yml |
+| `QUICK_SECRETS_SECRET_UUID_LENGTH` | The length of the UUID used to create a link to a secret | 8 |
 
 # Scripting
 
