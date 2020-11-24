@@ -17,3 +17,6 @@ database: "sqlite:///etc/quick_secrets/qsecrets.db"
 # Default password: password1!
 # Comment this line to disable auto creation of admin account
 admin_password: 65c21921ca10a8502757efc9aa552874d181c6206feb2845a921eb57f5e518d4
+
+# The length of the unique string used for the URL of the string
+secret_uuid_length: 8
