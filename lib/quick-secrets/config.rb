@@ -4,22 +4,31 @@ module QuickSecrets
   class Configuration
     attr_reader :config
     attr_reader :config_file
-    
-    # TODO add config file as command line argument so it can be passed to here
-    def initialize(config_file = nil)
+
+    CONFIG_DEFAULT = "/etc/quick_secrets/config.yml"
+    CONFIG_TEMPLATE = __dir__+"/templates/config.yml"
+
+    def initialize(args = nil)
+      # default to that provided on the command line
+      @config_file = args['--config']
+
       # If not specified in command line, check environment variable
       @config_file = ENV["QUICK_SECRETS_CONFIG"] if config_file.nil?
 
       # If specified nowhere, fallback to default
-      @config_file = "/etc/quick_secrets/config.yml" if @config_file.nil?
+      @config_file = CONFIG_DEFAULT if @config_file.nil?
+
+      # Load from whatever we found
       load_config
     end
 
     # If the config file does not exist, deploy it
     def load_config
       unless File.exists? config_file
-        FileUtils.cp(__dir__+"/templates/config.yml",config_file)
+        puts "seeding config from template #{CONFIG_TEMPLATE}"
+        FileUtils.cp(CONFIG_TEMPLATE, config_file)
       end
+      puts "loading config #{config_file}"
       @config = YAML.load(File.read(config_file))
       @config = {} if @config == false
     end
@@ -50,4 +59,3 @@ module QuickSecrets
 
   end
 end
-

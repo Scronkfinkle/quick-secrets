@@ -3,7 +3,7 @@ Gem::Specification.new do |s|
   s.name = 'quick-secrets'
 
   s.version = "0.0.1"
-  s.summary = 'Simplified, Self-hosted, One Time Secrets Alternative'
+  s.summary = 'Sublimely Simple Secure Self-Hosted Secret Sharing'
   s.description = ''
   s.authors = [
     "Jesse Roland"
@@ -23,6 +23,7 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency 'sqlite3'
   s.add_runtime_dependency 'sequel'
   s.add_runtime_dependency 'rdiscount'
+  s.add_runtime_dependency 'docopt'
 
   s.add_development_dependency 'pry'
   s.add_development_dependency 'pry-byebug'

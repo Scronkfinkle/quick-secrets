@@ -1,3 +1,4 @@
+require 'quick-secrets/args'
 require 'quick-secrets/config'
 require 'quick-secrets/privilege'
 require 'quick-secrets/core'
