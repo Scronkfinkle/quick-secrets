@@ -12,4 +12,5 @@ services:
       - QUICK_SECRETS_DATABASE=sqlite:///etc/quick_secrets/qsecrets.db
       - QUICK_SECRETS_ADMIN_PASSWORD=65c21921ca10a8502757efc9aa552874d181c6206feb2845a921eb57f5e518d4
       - QUICK_SECRETS_CONFIG=/etc/quick_secrets/config.yml
+      - QUICK_SECRETS_SECRET_UUID_LENGTH=8
 
