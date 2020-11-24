@@ -1,4 +1,5 @@
 require 'sequel'
+require "rubygems"
 
 module QuickSecrets
   class Core
@@ -7,14 +8,14 @@ module QuickSecrets
     attr_reader :config
 
     def initialize
-
+      @gemspec = Gem::Specification::load("quick-secrets.gemspec")
+      @args = QuickSecrets::ParseArgs.new(@gemspec)
+      @config = QuickSecrets::Configuration.new(@args)
       @authenticator = QuickSecrets::Auth.new
       @secrets = QuickSecrets::Secret::Manager.new
-      @config = QuickSecrets::Configuration.new
 
-      puts "Initializing db..."
+      puts "initializing db " # debug: #{@config['database']}"
       db_init
-
       check_default_admin
     end
 
@@ -35,7 +36,7 @@ module QuickSecrets
       end
 
     end
-    
+
     # Create database tables if needed
     def db_init
       unless db.table_exists? :account
