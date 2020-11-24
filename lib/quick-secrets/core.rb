@@ -14,7 +14,7 @@ module QuickSecrets
       @authenticator = QuickSecrets::Auth.new
       @secrets = QuickSecrets::Secret::Manager.new
 
-      puts "initializing db #{@config['database']}"
+      puts "initializing db " # debug: #{@config['database']}"
       db_init
       check_default_admin
     end
