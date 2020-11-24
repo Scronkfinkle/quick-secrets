@@ -174,9 +174,6 @@ module QuickSecrets
     # TODO Stop mixing the terms privilege and permission
     def get_perm(session)
       
-      # Make sure session is not expired
-      return -1 if expired?(session)
-      
       # First handle token auth
       token = session["token"]
       unless token.nil?
@@ -187,6 +184,9 @@ module QuickSecrets
         refresh_expiration(session)
         return account[:privilege]
       end
+
+      # Make sure session is not expired
+      return -1 if expired?(session)
       
       # If no access token is present, use the session to resolve an account
       account = resolve_account(session)
