@@ -8,12 +8,15 @@ module QuickSecrets
         Quick Secrets - #{gemspec.summary}
 
         Usage:
-          #{progname} [--config=FILE]
+          #{progname} [options]
+          #{progname} -h | --help
+          #{progname} --version
 
         Options:
           -h --help           Show this screen.
              --version        Show version.
-             --config=FILE    Location of configuration file [default: xxxxx].
+          -c --config=FILE    Configuration file location.
+          -d --database=URL   Database connection url or location.
       DOCOPT
 
       begin
@@ -22,7 +25,7 @@ module QuickSecrets
         puts e.message
         exit
       end
-      # print "config file: #{@args['--config']}\n"
+      # puts @args.to_s
     end
 
     # Allow access to any argument through the instance as if a hash.
