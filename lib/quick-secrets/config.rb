@@ -13,7 +13,7 @@ module QuickSecrets
       @config_file = args['--config']
 
       # If not specified in command line, check environment variable
-      @config_file = ENV["QUICK_SECRETS_CONFIG"] if config_file.nil?
+      @config_file = ENV["QUICK_SECRETS_CONFIG"] if @config_file.nil?
 
       # If specified nowhere, fallback to default
       @config_file = CONFIG_DEFAULT if @config_file.nil?
