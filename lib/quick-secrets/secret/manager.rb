@@ -27,12 +27,7 @@ module QuickSecrets
 
       # get the length for secret UUID's used in URL's
       def uuid_len
-        len = QuickSecrets::Core.core.config["secret_uuid_length"].to_i
-        if len.nil?
-          AUTH_UUID_LEN_DEFAULT
-        else
-          len
-        end
+        QuickSecrets::Core.core.config["secret_uuid_length"]&.to_i || AUTH_UUID_LEN_DEFAULT
       end
 
       # Generate a UUID for the secret's URL
