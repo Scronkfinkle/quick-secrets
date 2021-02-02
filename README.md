@@ -1,4 +1,4 @@
-# Quick Secrets - Sublimely Simple Secure Self-Hosted Secret Sharing
+# Quick Secrets - Simple Self-Hosted Secret Sharing
 
 ## What is Quick Secrets?
 
