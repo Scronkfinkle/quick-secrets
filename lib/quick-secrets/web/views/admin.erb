@@ -8,6 +8,15 @@
         <div class="col-sm">
           <%= ERB.new(File.read(__dir__+"/nav_row.erb")).result(binding) %>
           <h1>Administration</h1>
+          <div class="border">
+            <h2>Information</h2>
+            <table class="table">
+              <thead></thead>
+              <tr>
+                <td>Active Secrets: <%= QuickSecrets::Core.core.secrets.keys.size %></td>
+              </tr>
+            </table>
+          </div>
           <form class="border">
             <h2>Create New Account</h2>
             <div class="form-group">
