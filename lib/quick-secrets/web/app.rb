@@ -63,6 +63,12 @@ module QuickSecrets
         end
       end
 
+      get '/secret/list' do
+        auth_web(session, QuickSecrets::Privilege::ADMIN) do
+          QuickSecrets::Core.core.secrets.keys.to_json
+        end
+      end
+
       # Renders a page to get a secret based on ID
       get '/secret/:id' do
         digest = params['id']
@@ -86,6 +92,7 @@ module QuickSecrets
           erb :admin
         end
       end
+
 
       # Account settings
       get '/account' do

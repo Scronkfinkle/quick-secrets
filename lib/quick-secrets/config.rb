@@ -26,10 +26,25 @@ module QuickSecrets
     end
 
     def load_config
+      config_dir = File.dirname config_file
+      begin
+        FileUtils.mkdir_p config_dir unless File.exists? config_dir
+      rescue 
+        puts "ERROR: trying to create config directory #{config_dir}"
+        puts "Please create this directory and give the user you run this application under permission to read/write to it"
+        exit 1
+      end
+
       # If the config file does not exist, deploy it
       unless File.exists? config_file
-        puts "seeding config from template #{CONFIG_TEMPLATE}"
-        FileUtils.cp(CONFIG_TEMPLATE, config_file)
+        begin
+          puts "seeding config from template #{CONFIG_TEMPLATE}"
+          FileUtils.cp(CONFIG_TEMPLATE, config_file)
+        rescue
+          puts "ERROR: trying to create config file #{config_file}"
+          puts "Please give the user you run this application under permission to read/write to #{config_dir}"
+          exit 1
+        end
       end
       # load config
       puts "loading config #{config_file}"

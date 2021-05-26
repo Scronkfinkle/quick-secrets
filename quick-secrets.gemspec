@@ -24,6 +24,7 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency 'sequel'
   s.add_runtime_dependency 'rdiscount'
   s.add_runtime_dependency 'docopt'
+  s.add_runtime_dependency 'webrick'
 
   s.add_development_dependency 'pry'
   s.add_development_dependency 'pry-byebug'
