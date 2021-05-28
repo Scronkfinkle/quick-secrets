@@ -123,14 +123,14 @@ curl -X GET -H "qsecret-token: my_access_token"
 ## Generating a secret using a token
 To generate a secret, a JSON object needs to be sent to the **/secret** endpoint as a POST, with the following keys:
 **secret**
-**password**
+**passphrase**
 
 Example:
 ```
-curl -d '{"secret":"my secret phrase", "password":"my secret password"}' -H "qsecret-token: access_token" -X POST mysite.com/secret
+curl -d '{"secret":"super secret thing to share", "passphrase":"secret passphrase"}' -H "qsecret-token: access_token" -X POST mysite.com/secret
 ```
 
-If the authentication suceeds, a resulting JSON will come with a **status** and **digest** field. The digest field will return a SHA2 hash which can be used to resolve the secret URL. The URL can be resolved by appending the digest to the end of the URL with the secret endpoint.
+If the authentication succeeds, a resulting JSON will come with a **status** and **digest** field. The digest field will return a SHA2 hash which can be used to resolve the secret URL. The URL can be resolved by appending the digest to the end of the URL with the secret endpoint.
 
 For example:
 ```

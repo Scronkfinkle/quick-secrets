@@ -34,7 +34,7 @@ module QuickSecrets
       def secrets
         QuickSecrets::Core.core.secrets
       end
-      
+
       # Makes default page the "Create A New Secret Page"
       get '/' do
         auth_web(session, QuickSecrets::Privilege::USER) do
@@ -100,7 +100,7 @@ module QuickSecrets
           erb :account, :locals => {token: auth.get_token(session)}
         end
       end
-      
+
       # Deletes an account
       post '/delete_account/:id' do
         auth_web(session, QuickSecrets::Privilege::ADMIN) do
@@ -167,15 +167,15 @@ module QuickSecrets
       # TODO Refactor, status retval is clunky
       post '/secret/:id' do
         digest = params["id"]
-        password = JSON.parse(request.body.read)["password"]
-        secret = secrets.retrieve(digest,password)
+        passphrase = JSON.parse(request.body.read)["passphrase"]
+        secret = secrets.retrieve(digest,passphrase)
         if status = !secret.nil?
           secrets.destroy(digest)
         end
         {secret: secret, status: status}.to_json
       end
 
-      # Destroy a secret without the password
+      # Destroy a secret without the passphrase
       post '/burn/:id' do
         digest = params["id"]
         if status = secrets.exists?(digest)
@@ -189,10 +189,10 @@ module QuickSecrets
         auth_web(session, QuickSecrets::Privilege::USER) do
           params = JSON.parse request.body.read
           secret = params["secret"]
-          password = params["password"]
-          # TODO make password requirements configurable
-          digest = if secret.length > 0 && password.length > 0
-                     secrets.store(secret,password)
+          passphrase = params["passphrase"]
+          # TODO make passphrase requirements configurable
+          digest = if secret.length > 0 && passphrase.length > 0
+                     secrets.store(secret,passphrase)
                    else
                      nil
                    end

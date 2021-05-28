@@ -3,7 +3,7 @@
 ## What is Quick Secrets?
 Quick secrets is a small, portable, web app which allows users to create and share temporary secrets, via generated links.  
 
-Secrets are encrypted using AES-256 encryption and stored in memory. The password used to encrypt the secret and the original secret are not kept. Without the password, a secret cannot be recovered.
+Secrets are encrypted using AES-256 encryption and stored in memory. The passphrase used to encrypt the secret and the original secret are not kept. Without the passphrase, a secret cannot be recovered.
 
 Once a secret is viewed, it is permanently deleted. 
 
@@ -23,13 +23,13 @@ curl -X GET -H "qsecret-token: my_access_token"
 ```
 
 ## Generating a secret using a token
-To generate a secret, a JSON object needs to be sent to the **/secret** endpoint as a POST, with the following keys:  
-**secret**  
-**password**  
+To generate a secret, a JSON object needs to be sent to the **/secret** endpoint as a POST, with the following keys:
+**secret**
+**passphrase**
 
 Example:  
 ```
-curl -d '{"secret":"my secret phrase", "password":"my secret password"}' -H "qsecret-token: access_token" -X POST mysite.com/secret
+curl -d '{"secret":"my secret phrase", "passphrase":"my secret passphrase"}' -H "qsecret-token: access_token" -X POST mysite.com/secret
 ```
 
 If the authentication suceeds, a resulting JSON will come with a **status** and **digest** field. The digest field will return a SHA2 hash which can be used to resolve the secret URL. The URL can be resolved by appending the digest to the end of the URL with the secret endpoint.  

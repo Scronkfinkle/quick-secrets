@@ -6,7 +6,7 @@ require 'digest'
 module QuickSecrets
   module Secret
     class Manager
-      
+
       AUTH_UUID_LEN_DEFAULT = 8
 
       def initialize
@@ -16,7 +16,7 @@ module QuickSecrets
       def crypt_method
         'AES-256-CBC'
       end
-      
+
       def keys
         @secrets.keys
       end
@@ -39,14 +39,14 @@ module QuickSecrets
         end
         new_uuid
       end
-      
+
       # Stores a secret
-      def store(secret, password)
+      def store(secret, passphrase)
         cipher = OpenSSL::Cipher.new(crypt_method)
         cipher.encrypt
         iv = cipher.random_iv
         cipher.iv = iv
-        cipher.key = Digest::SHA256.digest password
+        cipher.key = Digest::SHA256.digest passphrase
         encrypted = cipher.update(secret)+cipher.final
         #key = Digest::SHA256.hexdigest encrypted
         secret_uuid = gen_uuid()
@@ -58,16 +58,16 @@ module QuickSecrets
       def destroy(uuid)
         @secrets.delete(uuid)
       end
-      
-      
-      def retrieve(uuid, password)
+
+
+      def retrieve(uuid, passphrase)
         if (data = @secrets[uuid]).nil?
           return nil
         else
           cipher = OpenSSL::Cipher.new(crypt_method)
           cipher.decrypt
           cipher.iv = data[:iv]
-          cipher.key = Digest::SHA256.digest password
+          cipher.key = Digest::SHA256.digest passphrase
           begin
             return cipher.update(data[:enc])+cipher.final
           rescue
@@ -75,8 +75,7 @@ module QuickSecrets
           end
         end
       end
-        
+
     end
   end
 end
-
