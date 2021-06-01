@@ -52,26 +52,12 @@
 </html>
 <script>
   $("#changepass").on("click",function(e){
+    // gather and validate form arguments
+    let pass1 = qs.validate_field('pass1', qs.is_valid_password);
+    let pass2 = qs.validate_field('pass2', (p2) => p2 == pass1);
 
-    let pass1 = $("#pass1").val();
-    let pass2 = $("#pass2").val();
-
-    if(pass1.length < 6){
-      $("#pass1").toggleClass("is-invalid",true);
-      $("#pass1Help").show();
-      return;
-    }else{
-      $("#pass1").toggleClass("is-invalid",false);
-      $("#pass1Help").hide();
-    }
-
-    if(pass2 !== pass1){
-      $("#pass2").toggleClass("is-invalid",true);
-      $("#pass2Help").show();
-      return;
-    }else{
-      $("#pass2").toggleClass("is-invalid",false);
-      $("#pass2Help").hide();
+    if (! pass1 || ! pass2) {
+      return
     }
 
     axios.post("/change_password",{password: pass1}).then(function(resp) {
