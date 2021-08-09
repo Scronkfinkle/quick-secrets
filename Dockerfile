@@ -1,7 +1,7 @@
-FROM debian:stable-slim
+FROM ubuntu:20.04
 LABEL maintainer "Jesse Roland <j.roland277@gmail.com>"
 
-RUN apt update && apt install ruby2.5 ruby2.5-dev sqlite3 libsqlite3-dev build-essential patch zlib1g-dev liblzma-dev -y
+RUN apt update && apt install ruby2.7 ruby2.7-dev sqlite3 libsqlite3-dev build-essential patch zlib1g-dev liblzma-dev -y
 RUN mkdir /etc/quick_secrets/
 
 ADD . /build
