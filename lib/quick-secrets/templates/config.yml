@@ -7,6 +7,8 @@ url: http://mysite.com
 listen_address: "0.0.0.0"
 listen_port: 8080
 
+store_secrets: True
+
 # Time until session expires in seconds
 session_expiration: 300
 

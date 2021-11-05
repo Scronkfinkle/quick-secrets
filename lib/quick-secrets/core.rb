@@ -55,6 +55,14 @@ module QuickSecrets
           Integer :account_id
         end
       end
+      unless db.table_exists? :secret
+        db.create_table :secret do
+          primary_key :id
+          String :uuid
+          Blob :initialization_vector
+          Blob :encrypted_data
+        end
+      end
     end
 
 
