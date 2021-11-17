@@ -79,7 +79,7 @@ module QuickSecrets
         #key = Digest::SHA256.hexdigest encrypted
         secret_uuid = gen_uuid()
         if store_secrets?
-          qs_db[:secret].insert(uuid: secret_uuid, initialization_vector: iv, encrypted_data: encrypted)
+          qs_db[:secret].insert(uuid: secret_uuid, initialization_vector: iv, encrypted_data: encrypted, expiration_date: nil)
         else
           @secrets[secret_uuid] = {initialization_vector: iv, encrypted_data: encrypted}
         end

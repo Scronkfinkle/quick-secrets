@@ -59,6 +59,7 @@ module QuickSecrets
         db.create_table :secret do
           primary_key :id
           String :uuid
+          String :expiration_date
           Blob :initialization_vector
           Blob :encrypted_data
         end
