@@ -14,7 +14,7 @@ An account is required to create secrets.  This enables organizations to host th
 
 ## How are secrets stored securely?
 
-Once a secret is entered and submitted, the secret is encrypted using AES-256 and stored **only** in memory, never written to disk.  Neither the secret passphrase used to encrypt the secret, nor the original plaintext secret are kept.  Without the secret passphrase, a secret cannot be recovered, even by the owner of the system hosting the application.
+Once a secret is entered and submitted, the secret is encrypted using AES-256 and can be configured to be stored **only** in memory or written to the database disk.  Neither the secret passphrase used to encrypt the secret, nor the original plaintext secret are kept.  Without the secret passphrase, a secret cannot be recovered, even by the owner of the system hosting the application.
 
 # Installation
 
@@ -107,6 +107,7 @@ Quick secrets can be configured via configuration file or by environment variabl
 | `QUICK_SECRETS_ADMIN_PASSWORD` | The default admin password, stored as a SHA256 hash | 65c21921ca10a8502757efc9aa552874d181c6206feb2845a921eb57f5e518d4  (this is `password1!`) |
 | `QUICK_SECRETS_CONFIG` | The location of the `config.yml` | /etc/quick_secrets/config.yml |
 | `QUICK_SECRETS_SECRET_UUID_LENGTH` | The length of the UUID used to create a link to a secret | 8 |
+| `QUICK_SECRETS_STORE_SECRETS` | The length of the UUID used to create a link to a secret | False |
 
 # Scripting
 

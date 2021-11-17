@@ -20,6 +20,11 @@ module QuickSecrets
         QuickSecrets::Core.core.authenticator
       end
 
+      # Secrets Manager
+      def secrets
+        QuickSecrets::Core.core.secrets
+      end
+
       # Wrapper method which checks permissions for an action.
       def auth_web(session, perm)
         session["token"] = request.env["HTTP_QSECRET_TOKEN"]
@@ -30,11 +35,6 @@ module QuickSecrets
         end
       end
 
-      # secrets hash
-      def secrets
-        QuickSecrets::Core.core.secrets
-      end
-      
       # Makes default page the "Create A New Secret Page"
       get '/' do
         auth_web(session, QuickSecrets::Privilege::USER) do
@@ -65,7 +65,7 @@ module QuickSecrets
 
       get '/secret/list' do
         auth_web(session, QuickSecrets::Privilege::ADMIN) do
-          QuickSecrets::Core.core.secrets.keys.to_json
+          secrets.keys.to_json
         end
       end
 
