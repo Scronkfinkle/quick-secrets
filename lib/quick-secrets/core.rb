@@ -60,8 +60,33 @@ module QuickSecrets
           primary_key :id
           String :uuid
           String :expiration_date
-          Blob :initialization_vector
-          Blob :encrypted_data
+          String :initialization_vector
+          String :encrypted_data
+        end
+      else
+        # Hotfix for instances that had buggy database
+        # https://github.com/Scronkfinkle/quick-secrets/issues/39
+        unless db[:secret].detect {|x| x[:initialization_vector].class == Sequel::SQL::Blob }.nil?
+          puts "OLD DB DETECTED, MIGRATING"
+          old_entries = db[:secret].map do |row|
+            row[:initialization_vector] = row[:initialization_vector].unpack('H*')[0]
+            row[:encrypted_data] = row[:encrypted_data].unpack('H*')[0]
+            row
+          end
+
+          # Drop all older tables
+          db[:secret].delete
+          
+          # Convert columns
+          db.alter_table(:secret) do
+            drop_column :initialization_vector
+            drop_column :encrypted_data
+            add_column :initialization_vector, String
+            add_column :encrypted_data, String
+          end
+
+          # Re-insert
+          db[:secret].multi_insert(old_entries)
         end
       end
     end

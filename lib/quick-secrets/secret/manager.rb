@@ -79,7 +79,17 @@ module QuickSecrets
         #key = Digest::SHA256.hexdigest encrypted
         secret_uuid = gen_uuid()
         if store_secrets?
-          qs_db[:secret].insert(uuid: secret_uuid, initialization_vector: iv, encrypted_data: encrypted, expiration_date: nil)
+          begin
+            db_iv = iv.unpack('H*')[0]
+            db_data = encrypted.unpack('H*')[0]
+            qs_db[:secret].insert(uuid: secret_uuid, 
+                                  initialization_vector: db_iv, 
+                                  encrypted_data: db_data, 
+                                  expiration_date: nil)
+          rescue => error
+            require 'pry'
+            binding.pry
+          end
         else
           @secrets[secret_uuid] = {initialization_vector: iv, encrypted_data: encrypted}
         end
@@ -99,7 +109,10 @@ module QuickSecrets
       def retrieve(uuid, password)
         return nil unless exists?(uuid)
         data = if store_secrets?
-                 qs_db[:secret].where(uuid: uuid).first
+                 retval = qs_db[:secret].where(uuid: uuid).first
+                 retval[:initialization_vector] = [retval[:initialization_vector]].pack('H*')
+                 retval[:encrypted_data] = [retval[:encrypted_data]].pack('H*')
+                 retval
                else
                  @secrets[uuid]
                end
